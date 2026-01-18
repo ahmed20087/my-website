@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Fire Fighter Car - Technical Project</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #e63946;
+      --primary-dark: #d00000;
+      --secondary: #1d3557;
+      --accent: #457b9d;
+      --light: #f1faee;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --success: #2a9d8f;
+      --warning: #f4a261;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--light);
+      line-height: 1.8;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light {
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      padding: 50px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="white" opacity="0.05"/></svg>');
+      pointer-events: none;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    header .tagline {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      max-width: 800px;
+      margin: 0 auto 20px;
+    }
+
+    .tech-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      padding: 8px 15px;
+      border-radius: 30px;
+      margin: 5px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      position:relative;
+      padding-bottom: 15px;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    body.light h2 {
+      color: var(--primary-dark);
+    }
+
+    /* Video */
+    .video-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+
+    video, iframe {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      border: none;
+    }
+
+    /* YouTube Video Link Styling */
+    .youtube-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .youtube-thumbnail {
+      position: relative;
+      display: inline-block;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .youtube-thumbnail:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .youtube-thumbnail img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+
+    .youtube-play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 0, 0, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: all 0.3s;
+    }
+
+    .youtube-thumbnail:hover .youtube-play-button {
+      background: #FF0000;
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 15px 40px rgba(255, 0, 0, 0.6);
+    }
+
+    .youtube-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #FF0000;
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .youtube-link-btn:hover {
+      background: #CC0000;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Button */
+    .download-btn {
+      display: block;
+      width: fit-content;
+      margin: 30px auto;
+      padding: 18px 35px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+      border: 2px solid var(--primary);
+    }
+
+    .download-btn:hover {
+      background: transparent;
+      color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(230, 57, 70, 0.4);
+    }
+
+    body.light .download-btn:hover {
+      color: var(--primary-dark);
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      transition: all 0.4s;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    body.light .card {
+      background: linear-gradient(145deg, #ffffff, #f1f5f9);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    .card .content {
+      padding: 25px;
+    }
+
+    .card h3 {
+      color: var(--accent);
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h3 i {
+      color: var(--primary);
+    }
+
+    .card p {
+      color: var(--gray);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    body.light .card p {
+      color: #4b5563;
+    }
+
+    /* Technical Components */
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .component-card {
+      background: rgba(29, 53, 87, 0.2);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      border: 1px solid rgba(69, 123, 157, 0.3);
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body.light .component-card {
+      background: rgba(241, 250, 238, 0.5);
+      border: 1px solid rgba(69, 123, 157, 0.2);
+    }
+
+    .component-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 25px rgba(69, 123, 157, 0.2);
+    }
+
+    .component-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      height: 70px;
+      width: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(230, 57, 70, 0.1);
+      border-radius: 50%;
+    }
+
+    .component-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--light);
+    }
+
+    body.light .component-card h4 {
+      color: var(--dark);
+    }
+
+    .component-card p {
+      color: var(--gray);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    body.light .component-card p {
+      color: #6b7280;
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .feature {
+      background: rgba(29, 53, 87, 0.15);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      border-left: 5px solid var(--primary);
+      transition: all 0.3s;
+    }
+
+    body.light .feature {
+      background: rgba(241, 250, 238, 0.7);
+      border-left: 5px solid var(--primary-dark);
+    }
+
+    .feature:hover {
+      background: rgba(29, 53, 87, 0.3);
+      transform: translateX(10px);
+    }
+
+    body.light .feature:hover {
+      background: rgba(241, 250, 238, 0.9);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--light);
+    }
+
+    body.light .feature h3 {
+      color: var(--dark);
+    }
+
+    footer {
+      background: var(--secondary);
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 60px;
+      font-size: 1rem;
+      color: #cbd5e1;
+    }
+
+    body.light footer {
+      background: #e2e8f0;
+      color: var(--dark);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Theme Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(30deg);
+      background: var(--primary-dark);
+    }
+
+    /* How It Works */
+    .workflow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .workflow-step {
+      background: rgba(29, 53, 87, 0.3);
+      padding: 25px;
+      border-radius: 15px;
+      width: 80%;
+      margin-bottom: 30px;
+      position: relative;
+      border: 2px solid rgba(69, 123, 157, 0.2);
+    }
+
+    body.light .workflow-step {
+      background: rgba(241, 250, 238, 0.7);
+    }
+
+    .workflow-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 30px;
+      background: var(--accent);
+    }
+
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      background: var(--primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Documentation and Demo Section */
+    .demo-doc-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 30px;
+      align-items: start;
+    }
+
+    @media (max-width: 992px) {
+      .demo-doc-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .demo-box, .doc-box {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    body.light .demo-box, 
+    body.light .doc-box {
+      background: linear-gradient(145deg, #ffffff, #f1f5f9);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .demo-box h3, .doc-box h3 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .demo-box h3 i, .doc-box h3 i {
+      color: var(--primary);
+    }
+
+    .demo-video-small {
+      width: 100%;
+      border-radius: 15px;
+      margin-top: 15px;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .doc-list {
+      list-style-type: none;
+      margin-top: 20px;
+    }
+
+    .doc-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    body.light .doc-list li {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .doc-list li i {
+      color: var(--success);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .tech-badge {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+      
+      video, .youtube-thumbnail img {
+        height: 300px;
+      }
+      
+      .youtube-play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+      }
+      
+      .workflow-step {
+        width: 95%;
+      }
+      
+      .theme-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .demo-box, .doc-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="dark">
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <header>
+    <div class="header-content">
+      <h1><i class="fas fa-fire-extinguisher"></i> Smart Fire Fighter Car</h1>
+     
+    </div>
+  </header>
+
+  <!-- Project Demonstration -->
+  <section>
+    <h2>Project Demonstration</h2>
+    <div class="demo-box">
+      <h3><i class="fas fa-video"></i> Live Demonstration</h3>
+      <p>Watch the Smart Fire Fighter Car in action. This video demonstrates the complete functionality including fire detection, autonomous navigation, and extinguishing process.</p>
+      
+      <div class="video-container" style="margin-top: 20px;">
+        <video controls poster="photocar3.jpg">
+          <source src="smart car final.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div style="margin-top: 25px;">
+        <h4>Demo Features:</h4>
+        <ul style="list-style-type: none; margin-top: 10px;">
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Live fire detection test</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Autonomous navigation demonstration</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Water pump activation sequence</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Bluetooth control interface</li>
+          <li><i class="fas fa-check-circle" style="color: var(--success);"></i> Real-time sensor data monitoring</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Documentation -->
+  <section>
+    <h2>Project Documentation</h2>
+    <div class="doc-box">
+      <h3><i class="fas fa-file-alt"></i> Complete Technical Documentation</h3>
+      <p>Download the comprehensive documentation including circuit diagrams, Arduino code, assembly instructions, and testing procedures.</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="book-smartcar.pdf" class="download-btn" download style="margin: 0; width: 100%; box-sizing: border-box;">
+          <i class="fas fa-download"></i> Download Full Documentation (PDF)
+        </a>
+      </div>
+      
+      <h4>Documentation Includes:</h4>
+      <ul class="doc-list">
+        <li><i class="fas fa-microchip"></i> Complete circuit schematics</li>
+        <li><i class="fas fa-code"></i> Arduino Nano source code with comments</li>
+        <li><i class="fas fa-tools"></i> Step-by-step assembly guide</li>
+        <li><i class="fas fa-flask"></i> Testing and calibration procedures</li>
+        <li><i class="fas fa-mobile-alt"></i> Mobile application setup guide</li>
+        <li><i class="fas fa-cogs"></i> Component specifications & datasheets</li>
+        <li><i class="fas fa-exclamation-triangle"></i> Safety guidelines & precautions</li>
+        <li><i class="fas fa-question-circle"></i> Troubleshooting FAQ</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Technical Explanation Video -->
+  <section>
+    <h2>Technical Explanation Video</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto 30px; color: var(--gray);">
+      Watch this detailed technical explanation video that breaks down the working principles, circuit design, and programming logic of the Smart Fire Fighter Car.
+    </p>
+    
+    <div class="youtube-container">
+      <!-- صورة مصغرة للفيديو مع زر تشغيل -->
+      <div class="youtube-thumbnail" onclick="openYouTubeVideo()">
+        <img src="https://img.youtube.com/vi/nMdZ2xcrKRk/maxresdefault.jpg" alt="YouTube Video Thumbnail">
+        <div class="youtube-play-button">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+      
+      <!-- زر رابط اليوتيوب -->
+      <div>
+        <a href="https://www.youtube.com/watch?v=nMdZ2xcrKRk" target="_blank" class="youtube-link-btn">
+          <i class="fab fa-youtube"></i>
+          Watch on YouTube
+        </a>
+        <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
+          انقر فوق الصورة لمشاهدة الفيديو على اليوتيوب مباشرة
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Overview -->
+  <section>
+    <h2>Project Overview</h2>
+    <div class="workflow">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <h3>Fire Detection</h3>
+        <p>The flame sensor continuously monitors the environment for fire signatures. When a fire is detected, it sends signals to the Arduino Nano controller.</p>
+      </div>
+      
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <h3>Autonomous Navigation</h3>
+        <p>Arduino Nano processes sensor data and controls DC motors via L298N motor driver to navigate toward the fire source while avoiding obstacles.</p>
+      </div>
+      
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <h3>Extinguishing System</h3>
+        <p>Upon reaching the fire, the Arduino activates a relay that powers the water pump to extinguish the flames. A buzzer alerts nearby personnel.</p>
+      </div>
+      
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <h3>Remote Control & Monitoring</h3>
+        <p>HC-05 Bluetooth module enables wireless control via a custom Android/iOS application, allowing manual override and real-time monitoring.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Components -->
+  <section>
+    <h2>Technical Components</h2>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-microchip"></i>
+        </div>
+        <h4>Arduino Nano</h4>
+        <p>The brain of the system - processes sensor data and controls all components with programmed logic.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-cogs"></i>
+        </div>
+        <h4>DC Motors & L298N Driver</h4>
+        <p>Two DC motors provide movement. L298N motor driver controls speed and direction based on Arduino signals.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <h4>Flame Sensor</h4>
+        <p>Detects fire presence through infrared radiation. Highly sensitive with adjustable detection range.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-bluetooth"></i>
+        </div>
+        <h4>HC-05 Bluetooth Module</h4>
+        <p>Enables wireless communication between the car and smartphone app for remote control and monitoring.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-tint"></i>
+        </div>
+        <h4>Water Pump & Relay</h4>
+        <p>12V water pump for extinguishing. 5V relay module safely controls high-voltage pump with low-voltage Arduino signals.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <h4>Buzzer</h4>
+        <p>Audible alarm that activates during fire detection to alert nearby personnel.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-battery-full"></i>
+        </div>
+        <h4>Power Supply</h4>
+        <p>Dual power system: 9V battery for Arduino/sensors, 12V battery for motors and water pump.</p>
+      </div>
+      
+      <div class="component-card">
+        <div class="component-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h4>Control Application</h4>
+        <p>Custom mobile app for manual control, real-time status monitoring, and emergency override functions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Gallery -->
+  <section>
+    <h2>Project Gallery</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="photocar3.jpg" alt="Car Design">
+        <div class="content">
+          <h3><i class="fas fa-car"></i> Chassis & Design</h3>
+          <p>Custom-designed acrylic frame providing stability and component mounting. Optimized for weight distribution and heat resistance.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="photocar1.jpg" alt="Circuit Assembly">
+        <div class="content">
+          <h3><i class="fas fa-project-diagram"></i> Circuit Assembly</h3>
+          <p>Neatly organized circuit with proper wiring, voltage regulation, and signal isolation for reliable operation.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="photocar2.jpg" alt="Control Interface">
+        <div class="content">
+          <h3><i class="fas fa-mobile-alt"></i> Control Interface</h3>
+          <p>Mobile application with intuitive UI for manual control, sensor data display, and emergency functions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features -->
+  <section>
+    <h2>Key Features</h2>
+    <div class="features">
+      <div class="feature">
+        <i class="fas fa-robot"></i>
+        <h3>Autonomous Operation</h3>
+        <p>Fully autonomous fire detection and extinguishing without human intervention.</p>
+      </div>
+      
+      <div class="feature">
+        <i class="fas fa-wifi"></i>
+        <h3>Bluetooth Control</h3>
+        <p>Wireless control via HC-05 module with range up to 10 meters in open space.</p>
+      </div>
+      
+      <div class="feature">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Safety Systems</h3>
+        <p>Built-in safety protocols including automatic shutoff and obstacle avoidance.</p>
+      </div>
+      
+      <div class="feature">
+        <i class="fas fa-bolt"></i>
+        <h3>Efficient Power Management</h3>
+        <p>Dual power system with automatic voltage regulation for optimal performance.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <p><i class="fas fa-fire-extinguisher"></i> Smart Fire Fighter Car Project</p>
+      <p>Technical Implementation: Arduino Nano • DC Motors • L298N Driver • Flame Sensor • HC-05 Bluetooth</p>
+      <p style="margin-top: 15px;">© 2025 Embedded Systems Project | Developed by Ahmed</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const themeToggle = document.querySelector('.theme-toggle i');
+      
+      body.classList.toggle('light');
+      
+      if (body.classList.contains('light')) {
+        themeToggle.classList.remove('fa-moon');
+        themeToggle.classList.add('fa-sun');
+      } else {
+        themeToggle.classList.remove('fa-sun');
+        themeToggle.classList.add('fa-moon');
+      }
+    }
+    
+    // Add smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // فتح فيديو اليوتيوب في نافذة جديدة
+    function openYouTubeVideo() {
+      window.open('https://www.youtube.com/watch?v=nMdZ2xcrKRk', '_blank');
+    }
+    
+    // Auto-play video on scroll into view (optional)
+    const observerOptions = {
+      threshold: 0.5
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // You could add autoplay logic here if needed
+        }
+      });
+    }, observerOptions);
+    
+    // Observe video elements
+    document.querySelectorAll('video').forEach(video => {
+      observer.observe(video);
+    });
+  </script>
+</body>
+</html>
